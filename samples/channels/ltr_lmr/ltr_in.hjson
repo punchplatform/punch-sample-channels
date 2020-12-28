@@ -1,0 +1,42 @@
+{
+  version: "6.0"
+  runtime: storm
+  dag: [
+    {
+      component: tcp_input
+      type: syslog_input
+      settings: {
+        listen: { proto: "tcp", host: "0.0.0.0", port: 9902 }
+        self_monitoring.activation: false
+        self_monitoring.period: 60
+      }
+      publish: [
+        { stream: "logs", fields: [ 
+          "log", "_ppf_local_host", "_ppf_local_port", 
+          "_ppf_remote_host", "_ppf_remote_port", "_ppf_timestamp", "_ppf_id" ]}
+        { stream: "_ppf_metrics", fields: [ "_ppf_latency" ] }
+      ]
+    }
+    {
+      type: kafka_output
+      settings: {
+        topic: ltr
+        brokers: common
+        encoding: lumberjack
+        producer.acks: "1"
+      }
+      subscribe: [
+        { stream: "logs", component: "tcp_input" }
+        { stream: "_ppf_metrics", component: "tcp_input" }
+      ]
+    }
+  ]
+  metrics: {
+    reporters: [ { type: "kafka" } ]
+    reporting_interval: 10
+  }
+  settings: {
+    topology.max.spout.pending : 5000
+    topology.worker.childopts: -server -Xms756m -Xmx756m
+  }
+}
