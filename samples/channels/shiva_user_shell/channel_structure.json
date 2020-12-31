@@ -1,0 +1,33 @@
+{
+    "version" : "6.0",
+    "start_by_tenant" : true,
+    "stop_by_tenant" : true,
+    "applications" : [  
+        { 
+            "type" : "shiva",
+            "name" : "echo",
+            "command" : "echo",
+            "args": [ "a straight shell builtin command"],
+            "quartzcron_schedule" : "0/5 * * * * ? *",
+            "cluster" : "common",
+            "shiva_runner_tags" : ["common"]
+        }
+        { 
+            "type" : "shiva",
+            "name" : "user_shell",
+            "command" : "user_shell.sh",
+            "args": [ "a user shell executed every 5 second"],
+            "quartzcron_schedule" : "0/5 * * * * ? *",
+            "cluster" : "common",
+            "shiva_runner_tags" : ["common"]
+        }
+        { 
+            "type" : "shiva",
+            "name" : "user_forever_shell",
+            "command" : "user_forever_shell.sh",
+            "args": [ "a user shell that runs forever"],
+            "cluster" : "common",
+            "shiva_runner_tags" : ["common"]
+        }
+    ]
+}
