@@ -13,14 +13,12 @@ The sample channels provided here are grouped as part of a 'sample' tenant. That
 install these sample on your standalone or production platform. 
 
 To install on you standalone, simply copy or link these channels as part of one of 
-your tenant. For example
+your tenant. The simplest is to just type in
 
 ```sh
-cp -rf ./samples $PUNCHPLATFORM_CONF_DIR/tenants/sample
+ln -s samples $PUNCHPLATFORM_CONF_DIR/tenants/samples
 ```
-Or better
-
+From there you can start the channels using the interactive punch cli
 ```sh
-cd $PUNCHPLATFORM_CONF_DIR/tenants/
-ln -s <punch-sample-channels dir>/samples
+channelctl --tenant samples
 ```
